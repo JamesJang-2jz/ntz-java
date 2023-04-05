@@ -12,7 +12,6 @@ public final class Notez {
     }
     /**
      * Says hello to the world.
-     * 
      * @param args The arguments of the program.
      */
     public static void main(String argv[]) {
@@ -32,14 +31,12 @@ public final class Notez {
 
         /*
          * You will spend a lot of time right here.
-         * 
+         *
          * instead of loadDemoEntries, you will implement a series
          * of method calls that manipulate the Notez engine.
          * See the first one:
          */
-        ntzEngine.loadDemoEntries();
-
-        ntzEngine.saveDatabase();
+//        ntzEngine.loadDemoEntries();
 
         if (argv.length == 0) { // there are no commandline arguments
             //just print the contents of the filemap.
@@ -47,16 +44,43 @@ public final class Notez {
         } else {
             if (argv[0].equals("-r")) {
                 ntzEngine.addToCategory("General", argv);
-            } // this should give you an idea about how to TEST the Notez engine
+            } else if (argv[0].equals("-c")) {
+                ntzEngine.addToCategory(argv[1], argv);
+            } else if (argv[0].equals("-f")){
+                ntzEngine.forgetNote(argv[1], Integer.parseInt(argv[2])-1);
+            } else if (argv[0].equals("-e")){
+                ntzEngine.editCategory(argv[1], Integer.parseInt(argv[2]) -1, argv[3]);
+            }
+            // this should give you an idea about how to TEST the Notez engine
               // without having to spend lots of time messing with command line arguments.
         }
+        ntzEngine.saveDatabase();
         /*
          * what other method calls do you need here to implement the other commands??
          */
+    }
 
+    private void editCategory(String s, int index, String replace) {
+        if (filemap.containsKey(s)){
+            filemap.get(s).set(index, replace);
+        }
+    }
+
+    private void forgetNote(String s, int index) {
+        if (filemap.containsKey(s)) {
+            filemap.get(s).remove(index);
+            if (filemap.get(s).size() == 0){
+                filemap.remove(s);
+            }
+        }
     }
 
     private void addToCategory(String string, String[] argv) {
+        if (filemap.containsKey(string)){
+            filemap.get(string).add(argv[argv.length-1]);
+        } else {
+            filemap.put(string, new NoteList(argv[argv.length-1]));
+        }
     }
 
     private void saveDatabase() {
@@ -80,5 +104,4 @@ public final class Notez {
     /*
      * Put all your additional methods that implement commands like forget here...
      */
-
 }

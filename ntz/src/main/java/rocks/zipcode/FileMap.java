@@ -43,7 +43,6 @@ public class FileMap implements Serializable, Map<String,NoteList> {
             e.printStackTrace();
         }
         return false;
-
     }
 
     public boolean save() {
@@ -59,9 +58,7 @@ public class FileMap implements Serializable, Map<String,NoteList> {
             e.printStackTrace();
         }
         return false;
-
     }
-
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
@@ -129,5 +126,5 @@ public class FileMap implements Serializable, Map<String,NoteList> {
         return hashmap.entrySet();
     }
 
- 
+
 }
